@@ -48,7 +48,7 @@ async def less_sugar_answer(call: types.callback_query):
 def register_questionnaire_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(
         questionnaire_start,
-        lambda call: call.data == "start_questionnaire"
+        lambda call: call.data == "start questionnaire"
     )
     dp.register_callback_query_handler(
         latte_answer,
