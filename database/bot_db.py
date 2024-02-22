@@ -13,6 +13,7 @@ class Database:
 
         self.connection.execute(sql_queries.CREATE_USER_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_BAN_USER_TABLE_QUERY)
+        self.connection.execute(sql_queries.CREATE_PROFILE_TABLE_QUERY)
 
         self.connection.commit()
 
@@ -31,7 +32,7 @@ class Database:
         self.connection.commit()
 
     def sql_select_ban_user(self, tg_id):
-        self.cursor.row_factory = lambda  cursor, row: {
+        self.cursor.row_factory = lambda cursor, row: {
             "id": row[0],
             "telegram_id": row[1],
             "count": row[1],
@@ -47,3 +48,27 @@ class Database:
             (tg_id,)
         )
         self.connection.commit()
+
+    def sql_insert_profile(self, tg_id, nickname, first_name, last_name, bio, age, zodiac_sign, photo):
+        self.cursor.execute(
+            sql_queries.INSERT_PROFILE_QUERY,
+            (None, tg_id, nickname, first_name, last_name, bio, age, zodiac_sign, photo)
+        )
+        self.connection.commit()
+
+    def sql_select_profile(self, tg_id):
+        self.cursor.row_factory = lambda cursor, row: {
+            "id": row[0],
+            "telegram_id": row[1],
+            "nickname": row[2],
+            "first_name": row[3],
+            "last_name": row[4],
+            "bio": row[5],
+            "age": row[6],
+            "zodiac_sign": row[7],
+            "photo": row[8],
+        }
+        return self.cursor.execute(
+            sql_queries.SELECT_PROFILE_QUERY,
+            (tg_id,)
+        ).fetchone()
